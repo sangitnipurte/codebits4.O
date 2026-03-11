@@ -23,6 +23,19 @@
     min-height: 100vh;
     overflow-x: hidden;
   }
+  .alert-panel{
+margin-top:28px;
+}
+
+.alert-box{
+background:#fff5f5;
+border:1px solid #fecaca;
+padding:16px;
+border-radius:10px;
+font-family:'DM Mono';
+font-size:14px;
+color:#991b1b;
+}
 
   /* Animated background grid */
   body::before {
@@ -36,6 +49,11 @@
     pointer-events: none;
     z-index: 0;
   }
+  .logo-icon img{
+width:42px;
+height:42px;
+object-fit:contain;
+}
 
   /* Rain animation */
   .rain-container {
@@ -392,6 +410,7 @@
     flex: 0 0 40px;
     padding-bottom: 28px;
   }
+
   .arrow-line {
     width: 100%;
     height: 2px;
