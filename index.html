@@ -5,193 +5,127 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CityPulse AI — Urban Risk Intelligence</title>
+<title>CityPulse AI — Select City</title>
 
-<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
 
-<!-- External CSS -->
-<link rel="stylesheet" href="style.css">
+<style>
 
-<!-- Chart.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+body{
+background:#f0f4f8;
+font-family:'DM Mono',monospace;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+margin:0;
+}
+
+.container{
+background:white;
+border-radius:14px;
+padding:50px;
+box-shadow:0 10px 40px rgba(0,0,0,0.1);
+text-align:center;
+width:420px;
+}
+
+.logo{
+font-family:'Syne',sans-serif;
+font-size:28px;
+font-weight:800;
+margin-bottom:6px;
+}
+
+.subtitle{
+color:#64748b;
+font-size:12px;
+letter-spacing:2px;
+text-transform:uppercase;
+margin-bottom:40px;
+}
+
+select{
+width:100%;
+padding:12px;
+border-radius:8px;
+border:1px solid #dce3ea;
+font-family:'DM Mono';
+font-size:14px;
+margin-bottom:25px;
+}
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:8px;
+font-family:'Syne';
+font-weight:700;
+font-size:15px;
+background:linear-gradient(135deg,#2563eb,#0ea5e9);
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+</style>
 
 </head>
 
 <body>
 
-<!-- Rain animation -->
-<div class="rain-container" id="rainContainer"></div>
+<div class="container">
 
-<div class="wrapper">
+<div class="logo">🌊 CityPulse AI</div>
+<div class="subtitle">Mapping the future with data</div>
 
-  <!-- HEADER -->
-  <header>
-    <div class="logo">
-      <div class="logo-icon">🌊</div>
-      <div class="logo-text">
-        <h1>CityPulse AI</h1>
-        <p>Mapping the future with data</p>
-      </div>
-    </div>
+<select class="city-select" id="citySelect" onchange="onCityChange()">
 
-    <div class="header-right">
-      <div class="live-badge">
-        <div class="live-dot"></div> LIVE
-      </div>
+<option value="" disabled selected>Example: any city name</option>
 
-      <div class="city-selector-wrap">
-        <span class="selector-icon">📍</span>
+<option value="Pune">Pune</option>
+<option value="Mumbai">Mumbai</option>
+<option value="Delhi">Delhi</option>
+<option value="Bengaluru">Bengaluru</option>
+<option value="Chennai">Chennai</option>
+<option value="Hyderabad">Hyderabad</option>
+<option value="Kolkata">Kolkata</option>
+<option value="Ahmedabad">Ahmedabad</option>
+<option value="Nagpur">Nagpur</option>
+<option value="Surat">Surat</option>
 
-        <select class="city-select" id="citySelect" onchange="onCityChange()">
-          <option value="Pune">Pune, IN</option>
-          <option value="Mumbai">Mumbai, IN</option>
-          <option value="Delhi">Delhi, IN</option>
-          <option value="Bengaluru">Bengaluru, IN</option>
-          <option value="Chennai">Chennai, IN</option>
-          <option value="Hyderabad">Hyderabad, IN</option>
-          <option value="Kolkata">Kolkata, IN</option>
-          <option value="Ahmedabad">Ahmedabad, IN</option>
-          <option value="Nagpur">Nagpur, IN</option>
-          <option value="Surat">Surat, IN</option>
-        </select>
+</select>
 
-        <span class="selector-chevron">▼</span>
-      </div>
-
-    </div>
-  </header>
-
-  <!-- WEATHER BANNER -->
-  <div class="weather-banner" id="weatherBanner">
-
-    <div class="weather-item">
-      <label>Condition</label>
-      <value id="wMain">—</value>
-    </div>
-
-    <div class="sep"></div>
-
-    <div class="weather-item">
-      <label>Description</label>
-      <value id="wDesc">—</value>
-    </div>
-
-    <div class="sep"></div>
-
-    <div class="weather-item">
-      <label>Rain Level</label>
-      <value id="wLevel" class="rain-level">—</value>
-    </div>
-
-    <div class="sep"></div>
-
-    <div class="weather-item">
-      <label>City</label>
-      <value id="wCity" style="color:var(--accent2)">Pune</value>
-    </div>
-
-    <div class="sep"></div>
-
-    <div class="weather-item">
-      <label>Last Updated</label>
-      <value id="wTime">—</value>
-    </div>
-
-  </div>
-
-  <!-- FLOW DIAGRAM -->
-  <div class="chart-panel" style="margin-bottom:28px">
-
-    <div class="panel-header">
-      <div>
-        <div class="panel-title">Event Chain — Causal Flow</div>
-        <div class="panel-sub" id="flowSubtitle">
-          Detecting weather → Analysing risk propagation
-        </div>
-      </div>
-
-      <div class="panel-badge" id="flowBadge">FLOW</div>
-    </div>
-
-    <div class="flow-diagram" id="flowDiagram">
-      <!-- JS renders nodes -->
-    </div>
-
-  </div>
-
-  <!-- CHARTS -->
-  <div class="charts-grid">
-
-    <!-- PIE CHART (LEFT) -->
-    <div class="chart-panel">
-
-      <div class="panel-header">
-        <div>
-          <div class="panel-title" id="pieTitle">Risk Distribution</div>
-          <div class="panel-sub" id="pieSub">
-            Probability breakdown across all events
-          </div>
-        </div>
-
-        <div class="panel-badge" id="pieBadge">PIE</div>
-      </div>
-
-      <div class="chart-container" style="height:260px">
-        <canvas id="pieChart"></canvas>
-      </div>
-
-    </div>
-
-    <!-- LINE CHART (RIGHT) -->
-    <div class="chart-panel">
-
-      <div class="panel-header">
-        <div>
-          <div class="panel-title" id="lineTitle">
-            Risk Escalation Across Rain Intensities
-          </div>
-
-          <div class="panel-sub" id="lineSub">
-            Simulated probability at each rain level (none → extreme)
-          </div>
-        </div>
-
-        <div class="panel-badge" id="lineBadge">TREND</div>
-      </div>
-
-      <div class="chart-container" style="height:260px">
-        <canvas id="lineChart"></canvas>
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- LOG -->
-  <div class="sim-log">
-
-    <div class="panel-header">
-      <div>
-        <div class="panel-title">Simulation Log</div>
-        <div class="panel-sub">Real-time event chain output</div>
-      </div>
-    </div>
-
-    <div class="log-entries" id="logEntries"></div>
-
-  </div>
-
-  <!-- FOOTER -->
-  <footer>
-    <div>CityPulse — Mapping the future with data</div>
-    <div>Built for Codebits 4.0 hackathon 2026 · India</div>
-  </footer>
+<button onclick="enterDashboard()">Open Dashboard</button>
 
 </div>
 
-<!-- External JS -->
-<script src="script.js"></script>
+<script>
+
+function enterDashboard(){
+
+const city=document.getElementById("citySelect").value
+
+localStorage.setItem("selectedCity",city)
+
+window.location.href="dashboard.html"
+
+}
+function onCityChange() {
+
+const city = document.getElementById("citySelect").value
+
+if(!city) return
+
+loadData(city)
+
+}
+
+</script>
 
 </body>
 </html>
