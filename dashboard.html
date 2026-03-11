@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -29,7 +30,10 @@
 <header>
 
 <div class="logo">
-<div class="logo-icon">🌊</div>
+
+<div class="logo-icon">
+<img src="logo.png" alt="CityPulse Logo">
+</div>
 
 <div class="logo-text">
 <h1>CityPulse AI</h1>
@@ -48,8 +52,8 @@
 
 </header>
 
-<!-- WEATHER BANNER -->
 
+<!-- WEATHER BANNER -->
 <div class="weather-banner">
 
 <div class="weather-item">
@@ -87,8 +91,8 @@
 
 </div>
 
-<!-- FLOW DIAGRAM -->
 
+<!-- FLOW DIAGRAM -->
 <div class="chart-panel" style="margin-bottom:28px">
 
 <div class="panel-header">
@@ -108,12 +112,11 @@ Detecting weather → Analysing risk propagation
 
 </div>
 
-<!-- CHARTS -->
 
+<!-- CHARTS -->
 <div class="charts-grid">
 
 <!-- PIE -->
-
 <div class="chart-panel">
 
 <div class="panel-header">
@@ -135,8 +138,8 @@ Probability breakdown across all events
 
 </div>
 
-<!-- LINE -->
 
+<!-- LINE -->
 <div class="chart-panel">
 
 <div class="panel-header">
@@ -163,23 +166,25 @@ Simulated probability at each rain level
 
 </div>
 
-<!-- LOG -->
 
-<div class="sim-log">
+<!-- ALERT SECTION -->
+<div class="alert-panel">
 
 <div class="panel-header">
 <div>
-<div class="panel-title">Simulation Log</div>
-<div class="panel-sub">Real-time event chain output</div>
+<div class="panel-title">Risk Alert</div>
+<div class="panel-sub">AI generated warning based on current conditions</div>
 </div>
 </div>
 
-<div class="log-entries" id="logEntries"></div>
+<div class="alert-box" id="alertMessage">
+⚠️ Monitoring weather conditions...
+</div>
 
 </div>
+
 
 <!-- FOOTER -->
-
 <footer>
 
 <div>CityPulse — Mapping the future with data</div>
@@ -189,40 +194,75 @@ Simulated probability at each rain level
 
 </div>
 
+
 <!-- Dashboard Logic -->
 <script src="script.js"></script>
 
 <script>
 
-/* Get selected city from first page */
-
+/* Get selected city */
 const savedCity = localStorage.getItem("selectedCity")
 
-/* If user opens dashboard directly */
-
 if(!savedCity){
-
 alert("Please select a city first")
-
 window.location.href="index.html"
-
 }
 
-/* Show city in banner */
-
+/* Show city */
 document.getElementById("wCity").textContent = savedCity + ", IN"
 
 /* Load simulation data */
-
 loadData(savedCity)
 
 /* Auto refresh */
-
 setInterval(() => {
-
 loadData(savedCity)
-
 },30000)
+
+
+/* ---------- AI ALERT SYSTEM ---------- */
+
+function updateAlert(){
+
+const rainLevel = document.getElementById("wLevel").textContent.toLowerCase()
+const alertBox = document.getElementById("alertMessage")
+
+if(rainLevel.includes("heavy")){
+
+alertBox.innerHTML="🚨 High Flood Risk detected. Avoid low-lying areas."
+alertBox.style.background="#fee2e2"
+alertBox.style.color="#991b1b"
+
+}
+
+else if(rainLevel.includes("moderate")){
+
+alertBox.innerHTML="⚠️ Moderate rainfall detected. Possible waterlogging."
+alertBox.style.background="#fff7ed"
+alertBox.style.color="#9a3412"
+
+}
+
+else if(rainLevel.includes("light")){
+
+alertBox.innerHTML="🌧 Light rain detected. No major risk expected."
+alertBox.style.background="#ecfeff"
+alertBox.style.color="#155e75"
+
+}
+
+else{
+
+alertBox.innerHTML="✅ Weather stable. No major risk detected."
+alertBox.style.background="#ecfdf5"
+alertBox.style.color="#065f46"
+
+}
+
+}
+
+/* Check alert every 2 seconds */
+setInterval(updateAlert,2000)
 
 </script>
 
