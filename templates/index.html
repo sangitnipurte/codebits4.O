@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CityPulse AI — Select City</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#f0f4f8;
+--panel:#ffffff;
+--border:#dde3ea;
+--accent:#2563eb;
+--accent2:#0ea5e9;
+--text:#1e293b;
+--muted:#64748b;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:var(--bg);
+font-family:'DM Mono',monospace;
+display:flex;
+align-items:center;
+justify-content:center;
+min-height:100vh;
+color:var(--text);
+}
+
+.card{
+background:var(--panel);
+border:1px solid var(--border);
+border-radius:20px;
+padding:45px;
+width:450px;
+box-shadow:0 8px 40px rgba(0,0,0,0.08);
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:14px;
+margin-bottom:30px;
+}
+
+.logo-icon{
+width:48px;
+height:48px;
+background:linear-gradient(135deg,#2563eb,#0ea5e9);
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.logo-icon img{
+width:30px;
+height:30px;
+}
+
+.logo-text h1{
+font-family:'Syne',sans-serif;
+font-size:22px;
+font-weight:800;
+}
+
+.logo-text p{
+font-size:11px;
+letter-spacing:2px;
+text-transform:uppercase;
+color:var(--muted);
+}
+
+h2{
+font-family:'Syne',sans-serif;
+font-size:18px;
+margin-bottom:6px;
+}
+
+.subtitle{
+font-size:12px;
+color:var(--muted);
+margin-bottom:25px;
+}
+
+label{
+font-size:11px;
+letter-spacing:1px;
+text-transform:uppercase;
+color:var(--muted);
+}
+
+.select-wrap{
+margin-top:8px;
+margin-bottom:25px;
+position:relative;
+}
+
+select{
+width:100%;
+padding:12px;
+border-radius:10px;
+border:1px solid var(--border);
+font-family:'DM Mono',monospace;
+font-size:14px;
+}
+
+.btn{
+width:100%;
+padding:14px;
+border:none;
+border-radius:10px;
+background:linear-gradient(135deg,#2563eb,#0ea5e9);
+color:white;
+font-weight:700;
+cursor:pointer;
+margin-top:10px;
+}
+
+.btn:hover{
+opacity:0.9;
+}
+
+.cities-preview{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-top:20px;
+}
+
+.city-pill{
+font-size:11px;
+padding:4px 10px;
+background:rgba(37,99,235,0.08);
+border-radius:20px;
+cursor:pointer;
+}
+
+.footer-note{
+margin-top:25px;
+font-size:11px;
+color:var(--muted);
+text-align:center;
+}
+
+.footer-note span{
+color:var(--accent);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<!-- Logo -->
+<div class="logo">
+
+<div class="logo-icon">
+<img src="{{ url_for('static', filename='images/logo.png') }}" alt="CityPulse Logo">
+</div>
+
+<div class="logo-text">
+<h1>CityPulse AI</h1>
+<p>Urban Risk Intelligence</p>
+</div>
+
+</div>
+
+<h2>Select Your City</h2>
+
+<p class="subtitle">
+Choose an Indian city to analyse real-time weather-driven urban risk using Monte Carlo causal simulation.
+</p>
+
+<label>City</label>
+
+<div class="select-wrap">
+<select id="citySelect">
+
+<option value="">— Select a city —</option>
+<option value="Pune">Pune</option>
+<option value="Mumbai">Mumbai</option>
+<option value="Delhi">Delhi</option>
+<option value="Bengaluru">Bengaluru</option>
+<option value="Chennai">Chennai</option>
+<option value="Hyderabad">Hyderabad</option>
+<option value="Kolkata">Kolkata</option>
+<option value="Ahmedabad">Ahmedabad</option>
+<option value="Nagpur">Nagpur</option>
+<option value="Surat">Surat</option>
+
+</select>
+</div>
+
+<button class="btn" onclick="goToDashboard()">
+🚀 Analyse Risk →
+</button>
+
+<div class="cities-preview">
+
+<span class="city-pill" onclick="quickSelect('Pune')">Pune</span>
+<span class="city-pill" onclick="quickSelect('Mumbai')">Mumbai</span>
+<span class="city-pill" onclick="quickSelect('Delhi')">Delhi</span>
+<span class="city-pill" onclick="quickSelect('Chennai')">Chennai</span>
+<span class="city-pill" onclick="quickSelect('Bengaluru')">Bengaluru</span>
+<span class="city-pill" onclick="quickSelect('Kolkata')">Kolkata</span>
+
+</div>
+
+<p class="footer-note">
+Powered by <span>OpenWeather API</span> · Monte Carlo Engine · Built for Codebits 4.0
+</p>
+
+</div>
+
+<script>
+
+function quickSelect(city){
+document.getElementById("citySelect").value = city;
+}
+
+function goToDashboard(){
+
+const city=document.getElementById("citySelect").value;
+
+if(!city){
+alert("Please select a city first.");
+return;
+}
+
+localStorage.setItem("selectedCity",city);
+window.location.href="/dashboard";
+
+}
+
+</script>
+
+</body>
+</html>

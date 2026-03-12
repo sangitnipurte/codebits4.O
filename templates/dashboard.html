@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CityPulse AI</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+
+<!-- External CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+</head>
+
+<body>
+
+<!-- Rain animation -->
+<div class="rain-container" id="rainContainer"></div>
+
+<div class="wrapper">
+
+<!-- HEADER -->
+<header>
+
+<div class="logo">
+
+  <div class="logo-icon">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="CityPulse Logo">
+  </div>
+
+  <div class="logo-text">
+    <h1>CityPulse AI</h1>
+    <p>Mapping the future with data</p>
+  </div>
+
+</div>
+
+
+
+
+
+<div class="header-right">
+
+<div class="live-badge">
+<div class="live-dot"></div> LIVE
+</div>
+
+</div>
+
+</header>
+
+
+<!-- WEATHER BANNER -->
+<div class="weather-banner">
+
+<div class="weather-item">
+<label>Condition</label>
+<value id="wMain">—</value>
+</div>
+
+<div class="sep"></div>
+
+<div class="weather-item">
+<label>Description</label>
+<value id="wDesc">—</value>
+</div>
+
+<div class="sep"></div>
+
+<div class="weather-item">
+<label>Rain Level</label>
+<value id="wLevel" class="rain-level">—</value>
+</div>
+
+<div class="sep"></div>
+
+<div class="weather-item">
+<label>City</label>
+<value id="wCity" style="color:var(--accent2)">—</value>
+</div>
+
+<div class="sep"></div>
+
+<div class="weather-item">
+<label>Last Updated</label>
+<value id="wTime">—</value>
+</div>
+
+</div>
+
+
+<!-- FLOW DIAGRAM -->
+<div class="chart-panel" style="margin-bottom:28px">
+
+<div class="panel-header">
+
+<div>
+<div class="panel-title">Event Chain — Casual Flow</div>
+<div class="panel-sub" id="flowSubtitle">
+Detecting weather → Analysing risk propagation
+</div>
+</div>
+
+<div class="panel-badge" id="flowBadge">FLOW</div>
+
+</div>
+
+<div class="flow-diagram" id="flowDiagram"></div>
+
+</div>
+
+
+<!-- CHARTS -->
+<div class="charts-grid">
+
+<!-- PIE -->
+<div class="chart-panel">
+
+<div class="panel-header">
+
+<div>
+<div class="panel-title" id="pieTitle">Risk Distribution</div>
+<div class="panel-sub" id="pieSub">
+Probability breakdown across all events
+</div>
+</div>
+
+<div class="panel-badge" id="pieBadge">PIE</div>
+
+</div>
+
+<div class="chart-container" style="height:260px">
+<canvas id="pieChart"></canvas>
+</div>
+
+</div>
+
+
+<!-- LINE -->
+<div class="chart-panel">
+
+<div class="panel-header">
+
+<div>
+<div class="panel-title" id="lineTitle">
+Risk Escalation Across Rain Intensities
+</div>
+
+<div class="panel-sub" id="lineSub">
+Simulated probability at each rain level
+</div>
+</div>
+
+<div class="panel-badge" id="lineBadge">TREND</div>
+
+</div>
+
+<div class="chart-container" style="height:260px">
+<canvas id="lineChart"></canvas>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ALERT SECTION -->
+<div class="alert-panel">
+
+<div class="panel-header">
+<div>
+<div class="panel-title">Risk Alert</div>
+<div class="panel-sub">AI generated warning based on current conditions</div>
+</div>
+</div>
+
+<div class="alert-box" id="alertMessage">
+⚠️ Monitoring weather conditions...
+</div>
+
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+
+<div>CityPulse — Mapping the future with data</div>
+<div>Built for Codebits 4.0 Hackathon · 2026</div>
+
+</footer>
+
+</div>
+
+
+<!-- Dashboard Logic -->
+<script src="{{ url_for('static', filename='JS/script.js') }}"></script>
+
+<script>
+/* ── Get saved city from landing page ── */
+const savedCity = localStorage.getItem("selectedCity");
+if (!savedCity) {
+  alert("Please select a city first.");
+  window.location.href = "/";
+}
+
+/* ── AI Alert updater — uses message from backend ── */
+function updateAlert(aiAlert, weatherType, rainLevel) {
+  const alertBox = document.getElementById("alertMessage");
+  if (!alertBox) return;
+
+  // Colour theme per severity
+  const themes = {
+    critical:    { bg:"#fee2e2", color:"#991b1b", border:"#fecaca" },
+    high:        { bg:"#fff7ed", color:"#9a3412", border:"#fed7aa" },
+    moderate:    { bg:"#fefce8", color:"#854d0e", border:"#fde68a" },
+    low:         { bg:"#ecfdf5", color:"#065f46", border:"#a7f3d0" },
+    info:        { bg:"#eff6ff", color:"#1e40af", border:"#bfdbfe" },
+  };
+
+  let theme = themes.low;
+  if (weatherType === "thunderstorm")               theme = themes.critical;
+  else if (rainLevel === "extreme" || rainLevel === "heavy") theme = themes.critical;
+  else if (rainLevel === "moderate")                theme = themes.high;
+  else if (rainLevel === "light")                   theme = themes.moderate;
+  else if (weatherType === "haze")                  theme = themes.info;
+
+  alertBox.innerHTML     = aiAlert || "⚠️ Monitoring weather conditions...";
+  alertBox.style.background = theme.bg;
+  alertBox.style.color      = theme.color;
+  alertBox.style.borderColor = theme.border;
+}
+
+/* ── Override loadData to also update alert from API ── */
+const _origLoad = loadData;
+window.loadData = async function(city) {
+  city = city || savedCity;
+  try {
+    const res  = await fetch(`/risk?city=${encodeURIComponent(city)}`);
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+
+    // Update alert from backend AI
+    updateAlert(data.ai_alert, data.weather_type, data.weather.rain_level);
+
+    // Pass to script.js renderData
+    renderData(data.weather, data.probabilities, data.risk_levels, city);
+  } catch {
+    // Fallback to original if backend unreachable
+    _origLoad(city);
+  }
+};
+
+/* ── Boot ── */
+loadData(savedCity);
+setInterval(() => loadData(savedCity), 30000);
+</script>
+
+</body>
+</html>
