@@ -1,6 +1,4 @@
+.env
+app.py
 __pycache__/
 *.pyc
-.env
-venv/
-instance/
-*.sqlite3
