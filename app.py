@@ -7,7 +7,7 @@ app = Flask(__name__)
 # ─────────────────────────────────────────
 # CONFIG — Get free key at openweathermap.org
 # ─────────────────────────────────────────
-OPENWEATHER_API_KEY = "6b58695a86a03cf4a2cda929566690ec"
+OPENWEATHER_API_KEY = "yourapikey"
 SIMULATION_RUNS = 10000
 
 # ─────────────────────────────────────────
