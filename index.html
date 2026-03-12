@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CityPulse AI — Select City</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+background:#f0f4f8;
+font-family:'DM Mono',monospace;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+margin:0;
+}
+
+.container{
+background:white;
+border-radius:14px;
+padding:50px;
+box-shadow:0 10px 40px rgba(0,0,0,0.1);
+text-align:center;
+width:420px;
+}
+
+.logo{
+font-family:'Syne',sans-serif;
+font-size:28px;
+font-weight:800;
+margin-bottom:6px;
+}
+
+.subtitle{
+color:#64748b;
+font-size:12px;
+letter-spacing:2px;
+text-transform:uppercase;
+margin-bottom:40px;
+}
+
+select{
+width:100%;
+padding:12px;
+border-radius:8px;
+border:1px solid #dce3ea;
+font-family:'DM Mono';
+font-size:14px;
+margin-bottom:25px;
+}
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:8px;
+font-family:'Syne';
+font-weight:700;
+font-size:15px;
+background:linear-gradient(135deg,#2563eb,#0ea5e9);
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+</style>
+
+</head>
+<style>
+    .logo img{
+width:160px;
+height:auto;
+margin-bottom:6px;
+}
+</style>
+
+<body>
+
+
+<div class="container">
+
+<div class="logo">
+<img src="logo.png" alt="CityPulse AI Logo">
+</div>
+<div class="subtitle">Mapping the future with data</div>
+
+<select class="city-select" id="citySelect" onchange="onCityChange()">
+
+<option value="" disabled selected>Example: any city name</option>
+
+<option value="Pune">Pune</option>
+<option value="Mumbai">Mumbai</option>
+<option value="Delhi">Delhi</option>
+<option value="Bengaluru">Bengaluru</option>
+<option value="Chennai">Chennai</option>
+<option value="Hyderabad">Hyderabad</option>
+<option value="Kolkata">Kolkata</option>
+<option value="Ahmedabad">Ahmedabad</option>
+<option value="Nagpur">Nagpur</option>
+<option value="Surat">Surat</option>
+
+</select>
+
+<button onclick="enterDashboard()">Open Dashboard</button>
+
+</div>
+
+<script>
+
+function enterDashboard(){
+
+const city=document.getElementById("citySelect").value
+
+localStorage.setItem("selectedCity",city)
+
+window.location.href="dashboard.html"
+
+}
+function onCityChange() {
+
+const city = document.getElementById("citySelect").value
+
+if(!city) return
+
+loadData(city)
+
+}
+
+</script>
+
+</body>
+</html>

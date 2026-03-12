@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CityPulse AI — Urban Risk Intelligence</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+
+<!-- External CSS -->
+<link rel="stylesheet" href="style.css">
+
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+</head>
+
+<body>
+
+<!-- Rain animation -->
+<div class="rain-container" id="rainContainer"></div>
+
+<div class="wrapper">
+
+<!-- HEADER -->
+<header>
+
+<div class="logo">
+
+<div class="logo-icon">
+<img src="logo.png" alt="CityPulse Logo">
+</div>
+
+<div class="logo-text">
+<h1>CityPulse AI</h1>
+<p>Mapping the future with data</p>
+</div>
+
+</div>
+
+<div class="header-right">
+
+<div class="live-badge">
+<div class="live-dot"></div> LIVE
+</div>
+
+</div>
+
+</header>
+
+
+<!-- WEATHER BANNER -->
+<div class="weather-banner">
+
+<div class="weather-item">
+<label>Condition</label>
+<value id="wMain">—</value>
+</div>
+
+<div class="sep"></div>
+
+<div class="weather-item">
+<label>Description</label>
+<value id="wDesc">—</value>
+</div>
+
+<div class="sep"></div>
+
+<div class="weather-item">
+<label>Rain Level</label>
+<value id="wLevel" class="rain-level">—</value>
+</div>
+
+<div class="sep"></div>
+
+<div class="weather-item">
+<label>City</label>
+<value id="wCity" style="color:var(--accent2)">—</value>
+</div>
+
+<div class="sep"></div>
+
+<div class="weather-item">
+<label>Last Updated</label>
+<value id="wTime">—</value>
+</div>
+
+</div>
+
+
+<!-- FLOW DIAGRAM -->
+<div class="chart-panel" style="margin-bottom:28px">
+
+<div class="panel-header">
+
+<div>
+<div class="panel-title">Event Chain — Causal Flow</div>
+<div class="panel-sub" id="flowSubtitle">
+Detecting weather → Analysing risk propagation
+</div>
+</div>
+
+<div class="panel-badge" id="flowBadge">FLOW</div>
+
+</div>
+
+<div class="flow-diagram" id="flowDiagram"></div>
+
+</div>
+
+
+<!-- CHARTS -->
+<div class="charts-grid">
+
+<!-- PIE -->
+<div class="chart-panel">
+
+<div class="panel-header">
+
+<div>
+<div class="panel-title" id="pieTitle">Risk Distribution</div>
+<div class="panel-sub" id="pieSub">
+Probability breakdown across all events
+</div>
+</div>
+
+<div class="panel-badge" id="pieBadge">PIE</div>
+
+</div>
+
+<div class="chart-container" style="height:260px">
+<canvas id="pieChart"></canvas>
+</div>
+
+</div>
+
+
+<!-- LINE -->
+<div class="chart-panel">
+
+<div class="panel-header">
+
+<div>
+<div class="panel-title" id="lineTitle">
+Risk Escalation Across Rain Intensities
+</div>
+
+<div class="panel-sub" id="lineSub">
+Simulated probability at each rain level
+</div>
+</div>
+
+<div class="panel-badge" id="lineBadge">TREND</div>
+
+</div>
+
+<div class="chart-container" style="height:260px">
+<canvas id="lineChart"></canvas>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ALERT SECTION -->
+<div class="alert-panel">
+
+<div class="panel-header">
+<div>
+<div class="panel-title">Risk Alert</div>
+<div class="panel-sub">AI generated warning based on current conditions</div>
+</div>
+</div>
+
+<div class="alert-box" id="alertMessage">
+⚠️ Monitoring weather conditions...
+</div>
+
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+
+<div>CityPulse — Mapping the future with data</div>
+<div>Built for Codebits 4.0 Hackathon · 2026</div>
+
+</footer>
+
+</div>
+
+
+<!-- Dashboard Logic -->
+<script src="script.js"></script>
+
+<script>
+
+/* Get selected city */
+const savedCity = localStorage.getItem("selectedCity")
+
+if(!savedCity){
+alert("Please select a city first")
+window.location.href="index.html"
+}
+
+/* Show city */
+document.getElementById("wCity").textContent = savedCity + ", IN"
+
+/* Load simulation data */
+loadData(savedCity)
+
+/* Auto refresh */
+setInterval(() => {
+loadData(savedCity)
+},30000)
+
+
+/* ---------- AI ALERT SYSTEM ---------- */
+
+function updateAlert(){
+
+const rainLevel = document.getElementById("wLevel").textContent.toLowerCase()
+const alertBox = document.getElementById("alertMessage")
+
+if(rainLevel.includes("heavy")){
+
+alertBox.innerHTML="🚨 High Flood Risk detected. Avoid low-lying areas."
+alertBox.style.background="#fee2e2"
+alertBox.style.color="#991b1b"
+
+}
+
+else if(rainLevel.includes("moderate")){
+
+alertBox.innerHTML="⚠️ Moderate rainfall detected. Possible waterlogging."
+alertBox.style.background="#fff7ed"
+alertBox.style.color="#9a3412"
+
+}
+
+else if(rainLevel.includes("light")){
+
+alertBox.innerHTML="🌧 Light rain detected. No major risk expected."
+alertBox.style.background="#ecfeff"
+alertBox.style.color="#155e75"
+
+}
+
+else{
+
+alertBox.innerHTML="✅ Weather stable. No major risk detected."
+alertBox.style.background="#ecfdf5"
+alertBox.style.color="#065f46"
+
+}
+
+}
+
+/* Check alert every 2 seconds */
+setInterval(updateAlert,2000)
+
+</script>
+
+</body>
+</html>
